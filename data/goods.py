@@ -1,0 +1,25 @@
+import datetime
+import sqlalchemy
+from sqlalchemy import orm
+from sqlalchemy_serializer import SerializerMixin
+from .db_session import SqlAlchemyBase
+
+
+# Класс товаров
+class Goods(SqlAlchemyBase, SerializerMixin):
+    __tablename__ = 'goods'
+
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
+
+    good = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    price = sqlalchemy.Column(sqlalchemy.Integer, nullable=True)
+    description = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+    date_of_public = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
+    is_sold = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
+    seller = sqlalchemy.Column(sqlalchemy.Integer, sqlalchemy.ForeignKey("users.id"))
+    contacts = sqlalchemy.Column(sqlalchemy.String, nullable=True)
+
+    user = orm.relation('User')
+
+    def __repr__(self):
+        return f'<Goods> {self.good}'

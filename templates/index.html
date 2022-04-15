@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+    <a href="/goods" class="btn btn-secondary">Добавить товар</a>
+    <a href="/bag" class="btn btn-warning">Корзина</a>
+{% endif %}
+{% if current_user.is_authenticated and current_user.email == "anastasia.kim.mobile@gmail.com"%}
+    <a href="/email_message" class="btn btn-primary">Отправить сообщение всем пользователям</a>
+
+{% endif %}
+
+<h1>Товары</h1>
+{% for item in goods %}
+<div class="col-md6 border rounded">
+    <a class="navbar-brand" href="/good/{{item.id}}">{{item.good}}</a>
+    <div>
+        {{item.description}}
+    </div>
+    <div>
+        Продавец - {{item.user.name}}, {{item.user.surname}}, Дата публикации - {{item.created_date}}
+    </div>
+    {% if current_user.is_authenticated and current_user == item.user %}
+    <div>
+        <a href="/goods/{{ item.id }}" class="btn btn-warning">
+            Изменить
+        </a>
+        <a href="/goods_delete/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+    {% elif current_user.is_authenticated and current_user != item.user %}
+    <div>
+        <a href="/add_bag/{{item.id}}" class="btn btn-secondary">
+            Добавить в корзину
+        </a>
+
+    </div>
+    {% endif %}
+</div>
+
+{% endfor %}
+{% endblock %}
