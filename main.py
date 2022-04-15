@@ -331,6 +331,7 @@ if __name__ == '__main__':
     db_session.global_init("db/MY_OLX.db")
 
     db_sess = db_session.create_session()
+    print('Проект работает')
 
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
